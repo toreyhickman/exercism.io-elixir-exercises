@@ -14,16 +14,16 @@ defmodule BracketPush do
   """
   @spec check_brackets(String.t) :: boolean
 
-  def check_brackets(str, openers \\ [])
+  def check_brackets(str, unclosed_openers \\ [])
   def check_brackets("", unclosed_openers), do: empty?(unclosed_openers)
-  def check_brackets(<<first::bytes-size(1)>> <> rest, openers) do
+  def check_brackets(<<first::bytes-size(1)>> <> rest, unclosed_openers) do
     cond do
       opener?(first) ->
-        check_brackets(rest, openers ++ [first])
+        check_brackets(rest, unclosed_openers ++ [first])
       closer?(first) ->
-        if paired?(last(openers), first), do: check_brackets(rest, remove_last(openers)), else: false
+        paired?(last(unclosed_openers), first) && check_brackets(rest, remove_last(unclosed_openers))
       true ->
-        check_brackets(rest, openers)
+        check_brackets(rest, unclosed_openers)
     end
   end
 
