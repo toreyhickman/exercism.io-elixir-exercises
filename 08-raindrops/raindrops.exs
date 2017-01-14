@@ -27,9 +27,6 @@ defmodule Raindrops do
     |> ensure_sound(number)
   end
 
-  defp ensure_sound(sound, number) when sound == "", do: "#{number}"
-  defp ensure_sound(sound, _), do: sound
-
   defp sound_makers do
     Map.keys(@sounds)
   end
@@ -41,4 +38,7 @@ defmodule Raindrops do
   defp evenly_divisible(number, sound_maker) do
     rem(number, sound_maker) == 0
   end
+
+  defp ensure_sound(sound, number) when sound == "", do: "#{number}"
+  defp ensure_sound(sound, _), do: sound
 end
