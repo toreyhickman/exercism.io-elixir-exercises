@@ -1,6 +1,4 @@
 defmodule BracketPush do
-  import Kernel, except: [match?: 2]
-
   import List,  only: [last: 1]
   import Enum,  only: [slice: 2, empty?: 1, member?: 2, map: 2]
 
