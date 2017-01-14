@@ -6,9 +6,9 @@ defmodule RunLengthEncoder do
   import Regex,  only: [scan: 3]
   import Enum,   only: [map: 2, join: 2]
 
-  @unencoded_string_chunker ~r/([a-z])\1*/i
-  @encoded_string_chunker   ~r/(\d+[a-z])/i
-  @letter          ~r/\d+/
+  @unencoded_chunk_pattern ~r/([a-z])\1*/i
+  @encoded_chunk_pattern   ~r/(\d+[a-z])/i
+  @letter ~r/\d+/
 
 
   @doc """
@@ -29,15 +29,15 @@ defmodule RunLengthEncoder do
   end
 
   defp chunk_unencoded(string) do
-    @unencoded_string_chunker |> chunk(string)
+    @unencoded_chunk_pattern |> chunk(string)
   end
 
   defp chunk_encoded(string) do
-    @encoded_string_chunker |> chunk(string)
+    @encoded_chunk_pattern |> chunk(string)
   end
 
-  defp chunk(regex, string) do
-    regex |> scan(string, capture: :first) |> flatten
+  defp chunk(pattern, string) do
+    pattern |> scan(string, capture: :first) |> flatten
   end
 
   defp encode_chunks(unencoded_chunks) do
