@@ -23,7 +23,7 @@ defmodule Raindrops do
 
   defp raindrop_sound(number) do
     sound_making_factors
-    |> map_join(fn(sound_making_factor) -> sound_for(number, sound_making_factor) end)
+    |> map_join(&(sound_for(number, &1)))
     |> ensure_sound(number)
   end
 
