@@ -22,21 +22,21 @@ defmodule Raindrops do
   end
 
   defp raindrop_sound(number) do
-    sound_makers
-    |> map_join(fn(sound_maker) -> sound_for(number, sound_maker) end)
+    sound_making_factors
+    |> map_join(fn(sound_making_factor) -> sound_for(number, sound_making_factor) end)
     |> ensure_sound(number)
   end
 
-  defp sound_makers do
+  defp sound_making_factors do
     Map.keys(@sounds)
   end
 
-  defp sound_for(number, sound_maker) do
-    if evenly_divisible(number, sound_maker), do: @sounds[sound_maker], else: ""
+  defp sound_for(number, possible_factor) do
+    if is_factor?(number, possible_factor), do: @sounds[possible_factor], else: ""
   end
 
-  defp evenly_divisible(number, sound_maker) do
-    rem(number, sound_maker) == 0
+  defp is_factor?(dividend, divisor) do
+    rem(dividend, divisor) == 0
   end
 
   defp ensure_sound(sound, number) when sound == "", do: "#{number}"
