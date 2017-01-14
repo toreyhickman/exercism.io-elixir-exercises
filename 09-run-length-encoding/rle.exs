@@ -41,19 +41,19 @@ defmodule RunLengthEncoder do
   end
 
   defp encode_chunks(unencoded_chunks) do
-    unencoded_chunks |> map(chunk_encoder)
+    unencoded_chunks |> map(&encode_chunk/1)
   end
 
-  defp chunk_encoder do
-    fn(unencoded_chunk) -> "#{length(unencoded_chunk)}#{first(unencoded_chunk)}" end
+  defp encode_chunk(unencoded_chunk) do
+    "#{length(unencoded_chunk)}#{first(unencoded_chunk)}"
   end
 
   defp decode_chunks(encoded_chunks) do
-    encoded_chunks |> map(chunk_decoder)
+    encoded_chunks |> map(&decode_chunk/1)
   end
 
-  defp chunk_decoder do
-    fn(encoded_chunk) -> pad_trailing(letter(encoded_chunk), quantity(encoded_chunk), letter(encoded_chunk)) end
+  defp decode_chunk(encoded_chunk) do
+    pad_trailing(letter(encoded_chunk), quantity(encoded_chunk), letter(encoded_chunk))
   end
 
   defp letter(encoded_chunk) do
