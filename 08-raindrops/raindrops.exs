@@ -18,15 +18,17 @@ defmodule Raindrops do
   """
   @spec convert(pos_integer) :: String.t
   def convert(number) do
-    number |> raindrop_sound |> ensure_sound(number)
+    number |> raindrop_sound
   end
 
   defp raindrop_sound(number) do
-    sound_makers |> map_join(fn(sound_maker) -> sound_for(number, sound_maker) end)
+    sound_makers
+    |> map_join(fn(sound_maker) -> sound_for(number, sound_maker) end)
+    |> ensure_sound(number)
   end
 
   defp ensure_sound(sound, number) when sound == "", do: "#{number}"
-  defp ensure_sound(sound, number), do: sound
+  defp ensure_sound(sound, _), do: sound
 
   defp sound_makers do
     Map.keys(@sounds)
