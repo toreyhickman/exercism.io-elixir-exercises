@@ -3,7 +3,7 @@ defmodule BracketPush do
 
   import Regex, only: [match?: 2]
   import List,  only: [last: 1]
-  import Enum,  only: [slice: 2]
+  import Enum,  only: [slice: 2, empty?: 1]
 
   @opener_pattern ~r/[\{\[\(]/
   @closer_pattern ~r/[\}\]\)]/
@@ -14,16 +14,8 @@ defmodule BracketPush do
   """
   @spec check_brackets(String.t) :: boolean
 
-  # Define function head to declare default argument values
   def check_brackets(str, openers \\ [])
-
-  # If the string is empty and there are no unclosed openers
-  def check_brackets("", []), do: true
-
-  # If the string is empty but there are unclosed openers
-  def check_brackets("", _), do: false
-
-  # Default implementation
+  def check_brackets("", unclosed_openers), do: empty?(unclosed_openers)
   def check_brackets(<<first::bytes-size(1)>> <> rest, openers) do
     cond do
       opener?(first) ->
