@@ -1,13 +1,10 @@
 defmodule BracketPush do
   import Kernel, except: [match?: 2]
 
-  import Regex, only: [match?: 2]
   import List,  only: [last: 1]
-  import Enum,  only: [slice: 2, empty?: 1]
+  import Enum,  only: [slice: 2, empty?: 1, member?: 2, map: 2]
 
-  @opener_pattern ~r/[\{\[\(]/
-  @closer_pattern ~r/[\}\]\)]/
-  @open_close_pattern ~r/(\{\}|\[\]|\(\))/
+  @bracket_pairs ["{}", "[]", "()"]
 
   @doc """
   Checks that all the brackets and braces in the string are matched correctly, and nested correctly
@@ -28,16 +25,24 @@ defmodule BracketPush do
   end
 
   defp opener?(character) do
-    @opener_pattern |> match?(character)
+    openers |> member?(character)
   end
 
   defp closer?(character) do
-    @closer_pattern |> match?(character)
+    closers |> member?(character)
   end
 
   defp paired?(nil, _), do: false
   defp paired?(opener, closer) do
-    @open_close_pattern |> match?(opener <> closer)
+    @bracket_pairs |> member?(opener <> closer)
+  end
+
+  defp openers do
+    @bracket_pairs |> map(&(String.first(&1)))
+  end
+
+  defp closers do
+    @bracket_pairs |> map(&(String.last(&1)))
   end
 
   defp remove_last(openers) do
