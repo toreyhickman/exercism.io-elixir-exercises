@@ -36,11 +36,11 @@ defmodule BracketPush do
   end
 
   defp openers do
-    @bracket_pairs |> map(&(String.first(&1)))
+    @bracket_pairs |> map(&String.first/1)
   end
 
   defp closers do
-    @bracket_pairs |> map(&(String.last(&1)))
+    @bracket_pairs |> map(&String.last/1)
   end
 
   defp remove_last(openers) do
